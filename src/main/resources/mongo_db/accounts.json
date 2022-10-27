@@ -1,0 +1,73 @@
+[{
+  "_id": {
+    "$oid": "635ab899963b732c09fb012c"
+  },
+  "institution": "HSBC",
+  "firstName": "Daniel",
+  "lastName": "Villalba",
+  "title": "Developer",
+  "country": "México",
+  "phone": "5636227641",
+  "email": "danielv@gmail.com",
+  "password": "danielvc89",
+  "createdAt": {
+    "$date": {
+      "$numberLong": "1666889881141"
+    }
+  },
+  "_class": "com.example.volexuiservice.model.Account"
+},{
+  "_id": {
+    "$oid": "635abb15e961231e618abe18"
+  },
+  "institution": "BBVA",
+  "firstName": "Juan",
+  "lastName": "Longines",
+  "title": "Developer",
+  "country": "Colombia",
+  "phone": "5544333456",
+  "email": "junlongines@gmail.com",
+  "password": "juan12345",
+  "createdAt": {
+    "$date": {
+      "$numberLong": "1666890517755"
+    }
+  },
+  "_class": "com.example.volexuiservice.model.Account"
+},{
+  "_id": {
+    "$oid": "635ac27c519c9d3359114124"
+  },
+  "institution": "Citi",
+  "firstName": "Jan",
+  "lastName": "Walter",
+  "title": "Director",
+  "country": "USA",
+  "phone": "344678643",
+  "email": "janwalter@gmail.com",
+  "password": "wlter2022",
+  "createdAt": {
+    "$date": {
+      "$numberLong": "1666892412730"
+    }
+  },
+  "_class": "com.example.volexuiservice.model.Account"
+},{
+  "_id": {
+    "$oid": "635ace52990d3d482be36ad7"
+  },
+  "institution": "Citi",
+  "firstName": "Jan",
+  "lastName": "Walter",
+  "title": "Director",
+  "country": "USA",
+  "phone": "344678643",
+  "email": "janwalterrrr@gmail.com",
+  "password": "wlter2022",
+  "createdAt": {
+    "$date": {
+      "$numberLong": "1666895442694"
+    }
+  },
+  "_class": "com.example.volexuiservice.model.Account"
+}]
