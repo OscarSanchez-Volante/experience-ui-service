@@ -1,7 +1,8 @@
 package com.example.volexuiservice.controller;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.ConstraintViolationException;
@@ -37,11 +38,21 @@ public class AccountController {
 	private AccountService accountService;
 	
 	@GetMapping("")
-	public ResponseEntity<?> getAllAccounts(){
-		//List<Account> accounts = accountRepository.findAll();
-		List<Account> accounts = accountService.getAllAccounts();
+	public ResponseEntity<?> getAllAccounts(){  
 		
-		return new ResponseEntity<>(accounts, accounts.size() > 0 ? HttpStatus.OK: HttpStatus.NOT_FOUND);
+		List<Account> accounts = accountService.getAllAccounts();
+		Map<String, Object> response = new HashMap<>();
+		
+		if( accounts.size() > 0 ) {
+			response.put("success", true);
+			response.put("data", accounts);
+			response.put("message", HttpStatus.OK);
+		}else {
+			response.put("success", false);
+			response.put("message", "No accounts available");
+		}
+		
+		return new ResponseEntity<>(response, accounts.size() > 0 ? HttpStatus.OK: HttpStatus.NOT_FOUND);
 		
 	}
 	
@@ -49,18 +60,31 @@ public class AccountController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping("")
 	public ResponseEntity<?> createAccount(@RequestBody Account account){
+		
+		Map<String, Object> response = new HashMap<>();
 		try {
-			//account.setCreatedAt(new Date(System.currentTimeMillis()));
-			//accountRepository.save(account);
+
 			accountService.createAccount(account);
-			return new ResponseEntity<Account>(account, HttpStatus.OK);
+			response.put("success", true);
+			response.put("data", account);
+			response.put("message", HttpStatus.CREATED);
+			return new ResponseEntity<>(response, HttpStatus.CREATED);
 			
 		}catch(ConstraintViolationException e) {
 			
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+			response.put("success", false);
+			response.put("message", e.getMessage());
+			//response.put("error", HttpStatus.UNPROCESSABLE_ENTITY);
+			//response.put("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
+			
+			return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
 		}catch(AccountCollectionException e) {
 			
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+			response.put("success", false);
+			response.put("message", e.getMessage());
+			//response.put("error", HttpStatus.CONFLICT);
+			//response.put("status", HttpStatus.CONFLICT.value());
+			return new ResponseEntity<>(response, HttpStatus.CONFLICT);
 			
 		}
 	}
@@ -68,10 +92,17 @@ public class AccountController {
 	@GetMapping("{id}")
 	public ResponseEntity<?> getAccountById(@PathVariable("id") String id){
 		Optional<Account> accountOptional = accountRepository.findById(id);
+		Map<String, Object> response = new HashMap<>();
 		if(accountOptional.isPresent()) {
 			return new ResponseEntity<>(accountOptional.get(),HttpStatus.OK);
 		}else {
-			return new ResponseEntity<>("Account not found with id "+id,HttpStatus.NOT_FOUND);
+			
+			response.put("success", false);
+			response.put("message", "Account not found with id "+id);
+			//response.put("error", HttpStatus.NOT_FOUND);
+			//response.put("status", HttpStatus.NOT_FOUND.value());
+			return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+			
 		}
 	}
 	
@@ -79,6 +110,9 @@ public class AccountController {
 	@PutMapping("{id}")
 	public ResponseEntity<?> updateAccount(@PathVariable String id, @RequestBody Account account){
 		Optional<Account> accountOptional = accountRepository.findById(id);
+		
+		Map<String, Object> response = new HashMap<>();
+		
 		if(accountOptional.isPresent()) {
 			Account accountSave = accountOptional.get();
 			
@@ -93,20 +127,40 @@ public class AccountController {
 			
 			accountRepository.save(accountSave);
 			
-			return new ResponseEntity<>(accountSave,HttpStatus.OK);
+			
+			response.put("success", true);
+			response.put("data", accountSave);
+			response.put("message", HttpStatus.OK);
+		
+			
+			return new ResponseEntity<>(response,HttpStatus.OK);
 			
 		}else {
-			return new ResponseEntity<>("Account not found with id "+id,HttpStatus.NOT_FOUND);
+			
+			response.put("success", false);
+			response.put("message", "Account not found with id "+id);
+			
+			return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
 		}
 	}
 	
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") String id ){
+		Map<String, Object> response = new HashMap<>();
+		
 		try {
 			accountRepository.deleteById(id);
-			return new ResponseEntity<>("Succesfully deleted with id "+id, HttpStatus.OK);
+			
+			response.put("success", true);
+			response.put("message", "Succesfully deleted with id "+id);
+			
+			return new ResponseEntity<>(response, HttpStatus.OK);
+			
 		}catch(Exception e) {
-			return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+			response.put("success", false);
+			response.put("message", e.getMessage());
+			
+			return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
 		}
 	}
 	
