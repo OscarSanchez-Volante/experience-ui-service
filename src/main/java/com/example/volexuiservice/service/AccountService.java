@@ -1,16 +1,21 @@
 package com.example.volexuiservice.service;
 
-import com.example.volexuiservice.exception.AccountCollectionException;
+import com.example.volexuiservice.dto.AccountResponse;
 import com.example.volexuiservice.model.Account;
-
-import java.util.List;
-
-import javax.validation.ConstraintViolationException;
 
 public interface AccountService {
 	
-	public void createAccount(Account account) throws ConstraintViolationException, AccountCollectionException;
 	
-	public List<Account> getAllAccounts();
+	public Account createAccount(Account account);
+	
+	public AccountResponse getAllAccounts(int page, int size, String orderBy, String sortDir, Boolean success);
+	
+	public Account getAccountByEmail(String email);
+	
+	public Account getAccountById(String id);
+	
+	public Account updateAccount(Account account, String id);
+	
+	public void deleteAccount( String id );
 
 }

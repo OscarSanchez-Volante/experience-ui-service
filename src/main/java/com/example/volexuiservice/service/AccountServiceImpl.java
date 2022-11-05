@@ -1,16 +1,19 @@
 package com.example.volexuiservice.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import javax.validation.ConstraintViolationException;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.example.volexuiservice.exception.AccountCollectionException;
+import com.example.volexuiservice.dto.AccountResponse;
+import com.example.volexuiservice.exception.AccountAppException;
+import com.example.volexuiservice.exception.ResourceNotFoundException;
 import com.example.volexuiservice.model.Account;
 import com.example.volexuiservice.repo.AccountRepository;
 
@@ -19,28 +22,100 @@ public class AccountServiceImpl implements AccountService {
 	
 	@Autowired
 	private AccountRepository accountRepository;
+	
+	
+	@Override
+	public Account createAccount(Account account) {
+		Optional<Account> accountOptional = accountRepository.findByEmail(account.getEmail());
+		
+		 if( accountOptional.isPresent() ) {
+			 throw new AccountAppException(HttpStatus.CONFLICT,HttpStatus.CONFLICT.value(),"Email already exists",false);
+		 }
+		 
+		 account.setCreatedAt( new Date(System.currentTimeMillis()) );
+		 Account newAccount = accountRepository.save(account);
+		
+		 
+		 return newAccount;
+	}
+
 
 	@Override
-	public void createAccount(Account account) throws ConstraintViolationException, AccountCollectionException {
-		// TODO Auto-generated method stub
-		Optional<Account> accountOptional =  accountRepository.findByEmail(account.getEmail());
-		if( accountOptional.isPresent() ) {
-			
-			throw new AccountCollectionException(AccountCollectionException.AccountAlreadyExists());
-			
-		}else {
-			account.setCreatedAt( new Date(System.currentTimeMillis()) );
-			accountRepository.save(account);
-		}
+	public AccountResponse getAllAccounts(int pageNumber, int pageSize, String orderBy, String sortDir, Boolean success){
+		
+		Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())?Sort.by(orderBy).ascending():Sort.by(orderBy).descending();
+		
+		Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+		
+		Page<Account> accounts = accountRepository.findAll(pageable);
+		
+		List<Account> accountList = accounts.getContent();
+		
+		AccountResponse accountResponse = new AccountResponse();
+		
+		accountResponse.setRows(accountList);
+		accountResponse.setPage(accounts.getNumber());
+		accountResponse.setSize(accounts.getSize());
+		accountResponse.setCount(accounts.getTotalElements());
+		accountResponse.setTotalPages(accounts.getTotalPages());
+		accountResponse.setLastPage(accounts.isLast());
+		accountResponse.setSuccess( true );
+		
+		return accountResponse;
+		
 	}
 	
-	public List<Account> getAllAccounts(){
-		List<Account> accounts = accountRepository.findAll();
-		if(accounts.size()>0) {
-			return accounts;
-		}else {
-			return new ArrayList<Account>();
-		}
+
+	
+	
+	@Override
+	public Account getAccountByEmail(String email) {
+		Account account = accountRepository.findByEmail(email)
+				.orElseThrow( ()-> new ResourceNotFoundException("Account","email",email) );
+		
+		
+		return account;
+	}
+	
+	@Override
+	public Account getAccountById(String id) {
+		Account account = accountRepository.findById(id)
+				.orElseThrow( ()-> new ResourceNotFoundException("Account","id",id) );
+		
+		
+		return account;
 	}
 
+	@Override
+	public Account updateAccount(Account account, String id) {
+		
+		Account accountSave = accountRepository.findById(id)
+				.orElseThrow( ()-> new ResourceNotFoundException("Account","id",id) );
+		
+		accountSave.setInstitution(account.getInstitution() !=null ? account.getInstitution() : accountSave.getInstitution() );
+		accountSave.setFirstName(account.getFirstName() !=null ? account.getFirstName() : accountSave.getFirstName() );
+		accountSave.setLastName(account.getLastName() !=null ? account.getLastName() : accountSave.getLastName() );
+		accountSave.setTitle(account.getTitle() !=null ? account.getTitle() : accountSave.getTitle() );
+		accountSave.setCountry(account.getCountry() !=null ? account.getCountry() : accountSave.getCountry() );
+		accountSave.setPhone(account.getPhone() !=null ? account.getPhone() : accountSave.getPhone() );
+		accountSave.setEmail(account.getEmail() != null ? account.getEmail() : accountSave.getEmail() );
+		accountSave.setPassword(account.getPassword() != null ? account.getPassword() : accountSave.getPassword() );
+		
+		Account accountUpdate = accountRepository.save(accountSave); 
+		return accountUpdate;
+		
+		
+	}
+	
+	@Override
+	public void deleteAccount(String id) {
+		Account account = accountRepository.findById(id)
+				.orElseThrow( ()-> new ResourceNotFoundException("Account","id",id) );
+		
+		accountRepository.delete(account);
+		
+	}
+
+
+	
 }
