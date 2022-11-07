@@ -1,5 +1,8 @@
 package com.example.volexuiservice.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.volexuiservice.dto.AccountResponse;
 import com.example.volexuiservice.dto.SuccessResponse;
 import com.example.volexuiservice.model.Account;
+import com.example.volexuiservice.model.AccountLoginDTO;
+import com.example.volexuiservice.model.Login;
 import com.example.volexuiservice.service.AccountService;
+import com.example.volexuiservice.service.LoginService;
 import com.example.volexuiservice.utilities.AppConstants;
 
 @CrossOrigin
@@ -30,6 +36,8 @@ public class AccountController {
 
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private LoginService loginService;
 
 	@GetMapping("")
 	public AccountResponse getAllAccounts(
@@ -82,6 +90,23 @@ public class AccountController {
 		SuccessResponse succesResponse = new SuccessResponse("Succesfully account deleted with id " + id,true,HttpStatus.NO_CONTENT,HttpStatus.NO_CONTENT.value());
 
 		return new ResponseEntity<>(succesResponse, HttpStatus.OK);
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<?> loginAccount(@RequestBody Login login){
+		AccountLoginDTO accountLogin = loginService.doLogin(login);
+        
+		Map<String, Object> response = new HashMap<>();
+		if(accountLogin!=null) {
+			response.put("success", true);
+			response.put("data", accountLogin);
+			response.put("message", HttpStatus.OK);
+		}else {
+			response.put("success", false);
+			response.put("message", "Account no found");
+		}
+
+        return new ResponseEntity<>(response, accountLogin != null ? HttpStatus.OK: HttpStatus.NOT_FOUND);	
 	}
 
 }
