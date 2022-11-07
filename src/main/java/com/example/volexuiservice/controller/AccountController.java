@@ -94,19 +94,9 @@ public class AccountController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> loginAccount(@RequestBody Login login){
-		AccountLoginDTO accountLogin = loginService.doLogin(login);
-        
-		Map<String, Object> response = new HashMap<>();
-		if(accountLogin!=null) {
-			response.put("success", true);
-			response.put("data", accountLogin);
-			response.put("message", HttpStatus.OK);
-		}else {
-			response.put("success", false);
-			response.put("message", "Account no found");
-		}
-
-        return new ResponseEntity<>(response, accountLogin != null ? HttpStatus.OK: HttpStatus.NOT_FOUND);	
-	}
+		SuccessResponse succesResponse = new SuccessResponse(loginService.doLogin(login),true,HttpStatus.OK,HttpStatus.OK.value());
+		
+		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
+    }
 
 }

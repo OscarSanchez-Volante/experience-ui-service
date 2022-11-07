@@ -15,6 +15,6 @@ public interface AccountRepository extends MongoRepository<Account, String> {
 	Optional<Account> findByEmail(String email);
 
 	@Query(value="{ 'email' :  ?0, 'password' :  ?1}")
-	Account doLogin(String email,String password);
+	Optional<Account> doLogin(String email,String password);
 
 }
