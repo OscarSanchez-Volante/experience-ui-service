@@ -64,6 +64,13 @@ public class AccountController {
 		
 		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
 	}
+	
+	@GetMapping("/status/{status}")
+	public ResponseEntity<?> getAccountByStatus(@PathVariable("status") String status){
+		SuccessResponse succesResponse = new SuccessResponse(accountService.getAccountByStatus(status),true,HttpStatus.OK,HttpStatus.OK.value());
+		
+		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
+	}
 
 	
 	@PostMapping("")

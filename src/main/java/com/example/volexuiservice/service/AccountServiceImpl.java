@@ -78,6 +78,16 @@ public class AccountServiceImpl implements AccountService {
 	}
 	
 	@Override
+	public Account getAccountByStatus(String status) {
+		Account account = accountRepository.findByStatus(status)
+				.orElseThrow( ()-> new ResourceNotFoundException("Account","status",status) );
+		
+		
+		return account;
+	}
+
+	
+	@Override
 	public Account getAccountById(String id) {
 		Account account = accountRepository.findById(id)
 				.orElseThrow( ()-> new ResourceNotFoundException("Account","id",id) );
@@ -115,6 +125,8 @@ public class AccountServiceImpl implements AccountService {
 		accountRepository.delete(account);
 		
 	}
+
+
 
 
 	

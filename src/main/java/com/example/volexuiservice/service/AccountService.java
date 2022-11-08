@@ -12,6 +12,8 @@ public interface AccountService {
 	
 	public Account getAccountByEmail(String email);
 	
+	public Account getAccountByStatus(String status);
+	
 	public Account getAccountById(String id);
 	
 	public Account updateAccount(Account account, String id);
