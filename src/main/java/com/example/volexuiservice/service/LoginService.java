@@ -9,5 +9,7 @@ import com.example.volexuiservice.model.Login;
 public interface LoginService {
 
     public AccountLoginDTO doLogin(Login login);
-    
+
+    public AccountLoginDTO doLoginAdmin(Login login);
+
 }

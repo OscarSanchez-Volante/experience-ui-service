@@ -31,5 +31,31 @@ public class LoginServiceImpl implements LoginService {
 		return accountLoginDTO;
 
     }
+
+
+    @Override
+    public AccountLoginDTO doLoginAdmin(Login login) {
+        //AccountLoginDTO accountLoginDTO=new ;
+        Account account = accountRepository.doLogin(login.getEmail(),login.getPassword())
+				.orElseThrow(()-> new AccountAppException(HttpStatus.NOT_FOUND, 404,"Account not found, please check login information is correct.",false) );
+        // System.out.println("----------------------------");
+        // System.out.println(account.getRole());
+        // System.out.println("/"+account.getRole()+"/");
+        // System.out.println(account.getRole()==="admin");
+        // System.out.println(account.getRole()!=="admin");
+        // System.out.println("----------------------------");
+        if(!account.getRole().equals("admin"))
+          throw( new AccountAppException(HttpStatus.NOT_FOUND, 404,"Account is not admin account, rejected.",false));
+        System.out.println(account.toString());
+
+        var accountLoginDTO=AccountLoginDTO.builder()
+        .userName(account.getFirstName())
+        .userLastName(account.getLastName())
+        .role(account.getRole())
+        .email(account.getEmail())
+        .id(account.getId())
+        .build();
+    		return accountLoginDTO;
+    }
     
 }

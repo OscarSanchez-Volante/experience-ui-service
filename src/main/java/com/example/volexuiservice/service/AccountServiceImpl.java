@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.example.volexuiservice.dto.AccountResponse;
+import com.example.volexuiservice.dto.SuccessResponse;
 import com.example.volexuiservice.exception.AccountAppException;
 import com.example.volexuiservice.exception.ResourceNotFoundException;
 import com.example.volexuiservice.model.Account;
@@ -115,6 +116,49 @@ public class AccountServiceImpl implements AccountService {
 		accountRepository.delete(account);
 		
 	}
+
+
+	@Override
+	public SuccessResponse updateAccountName(String id, String name, String lastname) {
+		Account accountSave = accountRepository.findById(id)
+		.orElseThrow( ()-> new ResourceNotFoundException("Account","id",id) );
+		accountSave.setFirstName(name);
+		accountSave.setLastName(lastname);
+		accountRepository.save(accountSave); 
+		return new SuccessResponse("Name updated successfully",true, HttpStatus.OK,200);
+	}
+
+
+	@Override
+	public SuccessResponse updateAccountEmail(String id, String email) {
+		Account accountSave = accountRepository.findById(id)
+		.orElseThrow( ()-> new ResourceNotFoundException("Account","id",id) );
+		accountSave.setEmail(email);
+		accountRepository.save(accountSave); 
+		return new SuccessResponse("Email updated successfully",true, HttpStatus.OK,200);
+	}
+
+
+	@Override
+	public SuccessResponse updateAccountPhone(String id, String phone) {
+		Account accountSave = accountRepository.findById(id)
+		.orElseThrow( ()-> new ResourceNotFoundException("Account","id",id) );
+		accountSave.setPhone(phone);
+		accountRepository.save(accountSave); 
+		return new SuccessResponse("Phone updated successfully",true, HttpStatus.OK,200);
+	}
+
+
+	@Override
+	public SuccessResponse updateAccountPassword(String id, String pass) {
+		Account accountSave = accountRepository.findById(id)
+		.orElseThrow( ()-> new ResourceNotFoundException("Account","id",id) );
+		accountSave.setPassword(pass);
+		accountRepository.save(accountSave); 
+		return new SuccessResponse("Password updated successfully",true, HttpStatus.OK,200);
+	}
+
+
 
 
 	

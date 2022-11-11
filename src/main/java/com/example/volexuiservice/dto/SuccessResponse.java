@@ -26,6 +26,15 @@ public class SuccessResponse {
 		this.code = code;
 	}
 
+	public SuccessResponse(Object data, Boolean success, HttpStatus status, int code,String message) {
+		super();
+		this.data = data;
+		this.success = success;
+		this.message = message;
+		this.status = status;
+		this.code = code;
+	}
+	
 	public Object getData() {
 		return data;
 	}

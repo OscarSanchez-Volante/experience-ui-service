@@ -1,7 +1,6 @@
 package com.example.volexuiservice.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Struct;
 
 import javax.validation.Valid;
 
@@ -22,11 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.volexuiservice.dto.AccountResponse;
 import com.example.volexuiservice.dto.SuccessResponse;
 import com.example.volexuiservice.model.Account;
-import com.example.volexuiservice.model.AccountLoginDTO;
 import com.example.volexuiservice.model.Login;
 import com.example.volexuiservice.service.AccountService;
 import com.example.volexuiservice.service.LoginService;
 import com.example.volexuiservice.utilities.AppConstants;
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Dynamic;
 
 @CrossOrigin
 @RestController
@@ -99,4 +98,50 @@ public class AccountController {
 		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
     }
 
+	@PostMapping("/loginAdmin")
+	public ResponseEntity<?> loginAccountAdmin(@RequestBody Login login){
+		SuccessResponse succesResponse = new SuccessResponse(loginService.doLoginAdmin(login),true,HttpStatus.OK,HttpStatus.OK.value(),"Successful admin login, redirecting to the control panel");
+		//SuccessResponse succesResponse = new SuccessResponse(loginService.doLoginAdmin(login),true,HttpStatus.OK,HttpStatus.OK.value());
+		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
+    }
+
+	public static class updateAccountNameData
+	{
+		public String id; 
+		public String name;  
+		public String lastname;  
+	};
+
+
+	@PostMapping("/updateAccountName")
+	public ResponseEntity<?> updateAccountName(@RequestBody updateAccountNameData data){
+		return new ResponseEntity<>(accountService.updateAccountName(data.id,data.name,data.lastname), HttpStatus.OK);
+    }
+
+
+	public static class updateAccountData
+	{
+		public String id; 
+		public String newvalue;  
+	};
+	@PostMapping("/updateAccountEmail")
+	public ResponseEntity<?> updateAccountEmail(@RequestBody updateAccountData data){
+		return new ResponseEntity<>(accountService.updateAccountEmail(data.id,data.newvalue), HttpStatus.OK);
+    }
+
+	@PostMapping("/updateAccountPhone")
+	public ResponseEntity<?> updateAccountPhone(@RequestBody updateAccountData data){
+		return new ResponseEntity<>(accountService.updateAccountPhone(data.id,data.newvalue), HttpStatus.OK);
+    }
+	
+	@PostMapping("/updateAccountPassword")
+	public ResponseEntity<?> updateAccountPassword(@RequestBody updateAccountData data){
+		return new ResponseEntity<>(accountService.updateAccountPassword(data.id,data.newvalue), HttpStatus.OK);
+    }
+
+
+
 }
+
+
+
