@@ -1,8 +1,5 @@
 package com.example.volexuiservice.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.volexuiservice.dto.AccountResponse;
 import com.example.volexuiservice.dto.SuccessResponse;
 import com.example.volexuiservice.model.Account;
-import com.example.volexuiservice.model.AccountLoginDTO;
 import com.example.volexuiservice.model.Login;
 import com.example.volexuiservice.service.AccountService;
 import com.example.volexuiservice.service.LoginService;
@@ -68,6 +64,22 @@ public class AccountController {
 	@GetMapping("/status/{status}")
 	public ResponseEntity<?> getAccountByStatus(@PathVariable("status") String status){
 		SuccessResponse succesResponse = new SuccessResponse(accountService.getAccountByStatus(status),true,HttpStatus.OK,HttpStatus.OK.value());
+		
+		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
+	}
+	
+	@PostMapping("/email")
+	public ResponseEntity<?> validateEmail(@RequestBody Login login) {
+		
+		SuccessResponse succesResponse = new SuccessResponse(loginService.validateEmail(login),true,HttpStatus.OK,HttpStatus.OK.value());
+		
+		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
+	}
+	
+	@PostMapping("/password")
+	public ResponseEntity<?> validatePassword(@RequestBody Login login) {
+		
+		SuccessResponse succesResponse = new SuccessResponse(loginService.validatePassword(login),true,HttpStatus.OK,HttpStatus.OK.value());
 		
 		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
 	}

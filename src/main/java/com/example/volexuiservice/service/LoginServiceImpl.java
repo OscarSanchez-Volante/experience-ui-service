@@ -13,6 +13,7 @@ import com.example.volexuiservice.model.AccountLoginDTO;
 import com.example.volexuiservice.model.Login;
 import com.example.volexuiservice.repo.AccountRepository;
 
+
 @Service
 public class LoginServiceImpl implements LoginService {
     
@@ -31,5 +32,44 @@ public class LoginServiceImpl implements LoginService {
 		return accountLoginDTO;
 
     }
+    
+    
+    
+    @Override
+    public AccountLoginDTO validateEmail(Login login) {
+    	
+    	AccountLoginDTO accountLoginDTO=null;
+    	
+    	Account account = accountRepository.validateEmail(login.getEmail())
+    			.orElseThrow(()-> new AccountAppException(HttpStatus.NOT_FOUND, 404,"The email account doesnt exist",false) );
+    	
+    	
+    	if( !account.getStatus().equals("active")) {
+    		throw new AccountAppException(HttpStatus.CONFLICT,HttpStatus.CONFLICT.value(),"The account is not active",false);
+    	}
+    	
+    	
+        accountLoginDTO=AccountLoginDTO.builder().userName(account.getEmail())
+        .role(account.getRole()).build();
+        
+        
+		return accountLoginDTO;
+    }
+
+	@Override
+	public AccountLoginDTO validatePassword(Login login) {
+    	AccountLoginDTO accountLoginDTO=null;
+    	
+    	Account account = accountRepository.validatePassword(login.getPassword())
+    			.orElseThrow(()-> new AccountAppException(HttpStatus.NOT_FOUND, 404,"The password is wrong",false) );
+    	
+    	
+        accountLoginDTO=AccountLoginDTO.builder().userName(account.getEmail())
+        .role(account.getRole()).build();
+        
+        
+		return accountLoginDTO;
+	}
+    
     
 }
