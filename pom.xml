@@ -100,6 +100,10 @@
 					<outputKind>module</outputKind>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+			</plugin>
 		</plugins>
 	</build>
 

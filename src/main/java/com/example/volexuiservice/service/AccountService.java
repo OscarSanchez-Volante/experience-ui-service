@@ -4,6 +4,8 @@ import com.example.volexuiservice.dto.AccountResponse;
 import com.example.volexuiservice.dto.SuccessResponse;
 import com.example.volexuiservice.model.Account;
 
+
+
 public interface AccountService {
 	
 	
@@ -12,6 +14,8 @@ public interface AccountService {
 	public AccountResponse getAllAccounts(int page, int size, String orderBy, String sortDir, Boolean success);
 	
 	public Account getAccountByEmail(String email);
+	
+	public Account getAccountByStatus(String status);
 	
 	public Account getAccountById(String id);
 	

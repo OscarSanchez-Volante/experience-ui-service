@@ -9,5 +9,6 @@ public class VolexUiServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(VolexUiServiceApplication.class, args);
 	}
+	
 
 }

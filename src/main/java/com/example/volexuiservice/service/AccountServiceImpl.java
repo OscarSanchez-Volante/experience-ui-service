@@ -25,6 +25,7 @@ public class AccountServiceImpl implements AccountService {
 	private AccountRepository accountRepository;
 	
 	
+	
 	@Override
 	public Account createAccount(Account account) {
 		Optional<Account> accountOptional = accountRepository.findByEmail(account.getEmail());
@@ -77,6 +78,16 @@ public class AccountServiceImpl implements AccountService {
 		
 		return account;
 	}
+	
+	@Override
+	public Account getAccountByStatus(String status) {
+		Account account = accountRepository.findByStatus(status)
+				.orElseThrow( ()-> new ResourceNotFoundException("Account","status",status) );
+		
+		
+		return account;
+	}
+
 	
 	@Override
 	public Account getAccountById(String id) {

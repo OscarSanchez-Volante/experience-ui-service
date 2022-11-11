@@ -1,7 +1,5 @@
 package com.example.volexuiservice.controller;
 
-import java.sql.Struct;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +58,29 @@ public class AccountController {
 		
 		
 		SuccessResponse succesResponse = new SuccessResponse(accountService.getAccountByEmail(email),true,HttpStatus.OK,HttpStatus.OK.value());
+		
+		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
+	}
+	
+	@GetMapping("/status/{status}")
+	public ResponseEntity<?> getAccountByStatus(@PathVariable("status") String status){
+		SuccessResponse succesResponse = new SuccessResponse(accountService.getAccountByStatus(status),true,HttpStatus.OK,HttpStatus.OK.value());
+		
+		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
+	}
+	
+	@PostMapping("/email")
+	public ResponseEntity<?> validateEmail(@RequestBody Login login) {
+		
+		SuccessResponse succesResponse = new SuccessResponse(loginService.validateEmail(login),true,HttpStatus.OK,HttpStatus.OK.value());
+		
+		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
+	}
+	
+	@PostMapping("/password")
+	public ResponseEntity<?> validatePassword(@RequestBody Login login) {
+		
+		SuccessResponse succesResponse = new SuccessResponse(loginService.validatePassword(login),true,HttpStatus.OK,HttpStatus.OK.value());
 		
 		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
 	}
