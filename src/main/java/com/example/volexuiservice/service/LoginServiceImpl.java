@@ -1,13 +1,11 @@
 package com.example.volexuiservice.service;
 
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.example.volexuiservice.exception.AccountAppException;
-import com.example.volexuiservice.exception.ResourceNotFoundException;
 import com.example.volexuiservice.model.Account;
 import com.example.volexuiservice.model.AccountLoginDTO;
 import com.example.volexuiservice.model.Login;
@@ -49,8 +47,8 @@ public class LoginServiceImpl implements LoginService {
     	}
     	
     	
-        accountLoginDTO=AccountLoginDTO.builder().userName(account.getEmail())
-        .role(account.getRole()).build();
+        accountLoginDTO=AccountLoginDTO.builder().userName(account.getEmail()).title(account.getTitle()).firstName(account.getFirstName())
+        		.lastName(account.getLastName()).institution(account.getInstitution()).email(account.getEmail()).role(account.getRole()).build();
         
         
 		return accountLoginDTO;
@@ -60,12 +58,12 @@ public class LoginServiceImpl implements LoginService {
 	public AccountLoginDTO validatePassword(Login login) {
     	AccountLoginDTO accountLoginDTO=null;
     	
-    	Account account = accountRepository.validatePassword(login.getPassword())
+    	Account account = accountRepository.validatePassword(login.getEmail(),login.getPassword())
     			.orElseThrow(()-> new AccountAppException(HttpStatus.NOT_FOUND, 404,"The password is wrong",false) );
     	
     	
-        accountLoginDTO=AccountLoginDTO.builder().userName(account.getEmail())
-        .role(account.getRole()).build();
+        accountLoginDTO=AccountLoginDTO.builder().userName(account.getEmail()).title(account.getTitle()).firstName(account.getFirstName())
+        		.lastName(account.getLastName()).institution(account.getInstitution()).email(account.getEmail()).role(account.getRole()).build();
         
         
 		return accountLoginDTO;

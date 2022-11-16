@@ -24,7 +24,7 @@ public interface AccountRepository extends MongoRepository<Account, String> {
 	@Query("{'email': ?0}")
 	Optional<Account> validateEmail(String email);
 	
-	@Query("{'password': ?0}")
-	Optional<Account> validatePassword(String password);
+	@Query("{ 'email' :  ?0, 'password' :  ?1}")
+	Optional<Account> validatePassword(String email,String password);
 
 }
