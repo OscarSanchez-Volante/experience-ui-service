@@ -89,7 +89,9 @@ public class AccountController {
 	@PostMapping("")
 	public ResponseEntity<?> createAccount(@Valid @RequestBody Account account){
 		
-		SuccessResponse succesResponse = new SuccessResponse(accountService.createAccount(account),true,HttpStatus.CREATED,HttpStatus.CREATED.value());
+		accountService.createAccount(account);
+		
+		SuccessResponse succesResponse = new SuccessResponse("Account created successfully",true,HttpStatus.CREATED,HttpStatus.CREATED.value());
 		
 		return new ResponseEntity<>(succesResponse, HttpStatus.OK);
 	}
