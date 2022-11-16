@@ -111,6 +111,8 @@ public class AccountServiceImpl implements AccountService {
 		accountSave.setPhone(account.getPhone() !=null ? account.getPhone() : accountSave.getPhone() );
 		accountSave.setEmail(account.getEmail() != null ? account.getEmail() : accountSave.getEmail() );
 		accountSave.setPassword(account.getPassword() != null ? account.getPassword() : accountSave.getPassword() );
+		accountSave.setStatus(account.getStatus() != null ? account.getStatus() : accountSave.getStatus() );
+		accountSave.setRole(account.getRole()!= null ? account.getRole() : accountSave.getRole());
 		
 		Account accountUpdate = accountRepository.save(accountSave); 
 		return accountUpdate;

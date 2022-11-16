@@ -94,7 +94,7 @@ public class AccountController {
 	}
 
 	@PutMapping("{id}")
-	public ResponseEntity<?> updateAccount(@Valid @RequestBody Account account, @PathVariable("id") String id) {
+	public ResponseEntity<?> updateAccount( @RequestBody Account account, @PathVariable("id") String id) {
 		
 		SuccessResponse succesResponse = new SuccessResponse(accountService.updateAccount(account, id),true,HttpStatus.ACCEPTED,HttpStatus.ACCEPTED.value());
 
