@@ -72,6 +72,10 @@ public class LoginServiceImpl implements LoginService {
     		throw new AccountAppException(HttpStatus.CONFLICT,HttpStatus.CONFLICT.value(),"The account is not active",false);
     	}
     	
+    	if( account.getRole() != null && account.getRole().equals("administrator") ) {
+    		throw new AccountAppException(HttpStatus.CONFLICT,HttpStatus.CONFLICT.value(),"This is an administrator account",false);
+    	}
+    	
     	
         accountLoginDTO=AccountLoginDTO.builder().userName(account.getEmail()).title(account.getTitle()).firstName(account.getFirstName())
         		.lastName(account.getLastName()).institution(account.getInstitution()).email(account.getEmail()).role(account.getRole()).build();
