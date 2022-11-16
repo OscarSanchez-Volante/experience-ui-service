@@ -27,6 +27,7 @@ public interface AccountService {
 	public SuccessResponse updateAccountEmail( String id, String email );
 	public SuccessResponse updateAccountPhone( String id, String account );
     public SuccessResponse updateAccountPassword(String id, String newvalue);
+	public SuccessResponse updateAccountStatus(String id, String newvalue);
 
 
 

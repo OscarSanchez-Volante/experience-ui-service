@@ -172,6 +172,16 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 
+	@Override
+	public SuccessResponse updateAccountStatus(String id, String newvalue) {
+		Account accountSave = accountRepository.findById(id)
+		.orElseThrow( ()-> new ResourceNotFoundException("Account","id",id) );
+		accountSave.setStatus(newvalue);
+		accountRepository.save(accountSave); 
+		return new SuccessResponse("Status updated successfully",true, HttpStatus.OK,200);
+	}
+
+
 
 
 	

@@ -162,6 +162,11 @@ public class AccountController {
 		return new ResponseEntity<>(accountService.updateAccountPassword(data.id,data.newvalue), HttpStatus.OK);
     }
 
+	@PostMapping("/updateAccountStatus")
+	public ResponseEntity<?> updateAccountStatus(@RequestBody updateAccountData data){
+		return new ResponseEntity<>(accountService.updateAccountStatus(data.id,data.newvalue), HttpStatus.OK);
+    }
+
 
 
 }
