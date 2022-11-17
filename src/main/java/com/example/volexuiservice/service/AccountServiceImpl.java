@@ -1,6 +1,5 @@
 package com.example.volexuiservice.service;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -224,6 +223,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public Long countActiveAccounts() {
+		
 		Long counter = accountRepository.countActiveAccounts("active")
 				.orElseThrow( ()-> new AccountAppException(HttpStatus.CONFLICT,HttpStatus.CONFLICT.value(),"No data exists",false));
 		return counter;

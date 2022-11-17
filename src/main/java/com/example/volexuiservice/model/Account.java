@@ -61,6 +61,8 @@ public class Account {
 	private Date createdAt;
 	private Date updatedAt;
 	
+	private Date lastLogin;
+	
 
 
 	public Account() {
@@ -75,7 +77,7 @@ public class Account {
 			@NotNull(message = "The Phone cannot be null") String phone,
 			@NotNull(message = "The Email cannot be null") @Email String email,
 			@NotNull(message = "The password cannot be null") String password, String role, String status,
-			Date createdAt, Date updatedAt) {
+			Date createdAt, Date updatedAt, Date lastLogin) {
 		super();
 		this.id = id; 
 		this.institution = institution;
