@@ -11,7 +11,7 @@ public interface AccountService {
 	
 	public Account createAccount(Account account);
 	
-	public AccountResponse getAllAccounts(int page, int size, String orderBy, String sortDir, Boolean success);
+	public AccountResponse getAllAccounts(String user, String email, String company,int page, int size, String orderBy, String sortDir, Boolean success);
 	
 	public Account getAccountByEmail(String email);
 	

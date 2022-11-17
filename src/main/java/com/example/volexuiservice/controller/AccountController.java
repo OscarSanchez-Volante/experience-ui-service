@@ -38,11 +38,15 @@ public class AccountController {
 
 	@GetMapping("")
 	public AccountResponse getAllAccounts(
+			@RequestParam(value="user", required=false) String user, 
+			@RequestParam(value="email", required=false) String email, 
+			@RequestParam(value="company", required=false) String company, 
 			@RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int page,
 			@RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_SIZE_PAGE, required = false) int size,
 			@RequestParam(value = "orderBy", defaultValue = AppConstants.DEFAULT_ORDER_BY, required = false) String orderBy,
 			@RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULt_ORDER_DIR, required = false) String sortDir) {
-		return accountService.getAllAccounts(page, size, orderBy, sortDir, true);
+		
+		return accountService.getAllAccounts(user,email,company,page, size, orderBy, sortDir, true);
 	}
 
 	@GetMapping("{id}")
@@ -52,6 +56,7 @@ public class AccountController {
 		
 		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
 	}
+	
 
 	@GetMapping("/email/{email}")
 	public ResponseEntity<?> getAccountByEmail(@PathVariable("email") String email) {
@@ -64,6 +69,7 @@ public class AccountController {
 	
 	@GetMapping("/status/{status}")
 	public ResponseEntity<?> getAccountByStatus(@PathVariable("status") String status){
+		
 		SuccessResponse succesResponse = new SuccessResponse(accountService.getAccountByStatus(status),true,HttpStatus.OK,HttpStatus.OK.value());
 		
 		return new ResponseEntity<>(succesResponse,HttpStatus.OK);

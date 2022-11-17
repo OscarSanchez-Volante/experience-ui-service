@@ -43,13 +43,43 @@ public class AccountServiceImpl implements AccountService {
 
 
 	@Override
-	public AccountResponse getAllAccounts(int pageNumber, int pageSize, String orderBy, String sortDir, Boolean success){
+	public AccountResponse getAllAccounts(String user, String email, String company, int pageNumber, int pageSize, String orderBy, String sortDir, Boolean success){
 		
 		Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())?Sort.by(orderBy).ascending():Sort.by(orderBy).descending();
 		
 		Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 		
-		Page<Account> accounts = accountRepository.findAll(pageable);
+		Page<Account> accounts;
+		
+		if( user != null && email != null && company != null ) {
+			accounts = accountRepository.findAllFilters(user,email,company,pageable);
+			
+		}else if(user != null && email == null && company == null ) {
+			accounts = accountRepository.findByUser(user, pageable);
+			
+		}else if( email != null && user == null && company == null ) {
+			accounts = accountRepository.findByEmail(email, pageable);
+			
+		}else if( company != null && user == null && email == null ) {
+			accounts = accountRepository.findByCompany(company, pageable);
+			
+		}else if( user != null && email !=null && company == null ) {
+			
+			accounts = accountRepository.findByUserEmail(user,email, pageable);
+			
+		}else if( user != null && company !=null && email == null ) {
+			
+			accounts = accountRepository.findByUserCompany(user,company, pageable);
+			
+		}else if( user == null && company !=null && email != null ) {
+			
+			accounts = accountRepository.findByEmailCompany(email,company, pageable);
+			
+		}
+		else {
+			accounts = accountRepository.findAll(pageable);
+		}
+		
 		
 		List<Account> accountList = accounts.getContent();
 		
@@ -126,7 +156,9 @@ public class AccountServiceImpl implements AccountService {
 		Account account = accountRepository.findById(id)
 				.orElseThrow( ()-> new ResourceNotFoundException("Account","id",id) );
 		
-		accountRepository.delete(account);
+		account.setStatus("removed");
+		
+		accountRepository.save(account);
 		
 	}
 
@@ -180,6 +212,7 @@ public class AccountServiceImpl implements AccountService {
 		accountRepository.save(accountSave); 
 		return new SuccessResponse("Status updated successfully",true, HttpStatus.OK,200);
 	}
+
 
 
 
