@@ -214,6 +214,29 @@ public class AccountServiceImpl implements AccountService {
 		return new SuccessResponse("Status updated successfully",true, HttpStatus.OK,200);
 	}
 
+	@Override
+	public Long countAllAccounts() {
+		Long counter = accountRepository.countAllAccounts()
+				.orElseThrow( ()-> new AccountAppException(HttpStatus.CONFLICT,HttpStatus.CONFLICT.value(),"No data exists",false));
+		return counter;
+	}
+
+
+	@Override
+	public Long countActiveAccounts() {
+		Long counter = accountRepository.countActiveAccounts("active")
+				.orElseThrow( ()-> new AccountAppException(HttpStatus.CONFLICT,HttpStatus.CONFLICT.value(),"No data exists",false));
+		return counter;
+		
+	}
+
+
+	@Override
+	public Long countInstAccounts() {
+		List<String> counter = accountRepository.countInstitutionsAccounts()
+				.orElseThrow( ()-> new AccountAppException(HttpStatus.CONFLICT,HttpStatus.CONFLICT.value(),"No data exists",false));
+		return (long) counter.size();
+	}
 
 
 	

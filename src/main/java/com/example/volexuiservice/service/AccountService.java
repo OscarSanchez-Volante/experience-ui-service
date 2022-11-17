@@ -1,7 +1,6 @@
 package com.example.volexuiservice.service;
 
 
-import com.example.volexuiservice.dto.AccountIndicators;
 import com.example.volexuiservice.dto.AccountResponse;
 import com.example.volexuiservice.dto.SuccessResponse;
 import com.example.volexuiservice.model.Account;
@@ -31,6 +30,12 @@ public interface AccountService {
 	public SuccessResponse updateAccountPhone( String id, String account );
     public SuccessResponse updateAccountPassword(String id, String newvalue);
 	public SuccessResponse updateAccountStatus(String id, String newvalue);
+
+
+	//Counters
+	public Long countAllAccounts();
+	public Long countActiveAccounts();
+	public Long countInstAccounts();
 
 
 

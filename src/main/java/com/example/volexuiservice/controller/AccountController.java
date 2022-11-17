@@ -176,6 +176,22 @@ public class AccountController {
 		return new ResponseEntity<>(accountService.updateAccountStatus(data.id,data.newvalue), HttpStatus.OK);
     }
 
+	@GetMapping("/countAllAccounts")
+	public ResponseEntity<?> countAllAccounts(){
+		SuccessResponse succesResponse = new SuccessResponse(accountService.countAllAccounts(),true,HttpStatus.ACCEPTED,HttpStatus.ACCEPTED.value());
+		return new ResponseEntity<>(succesResponse, HttpStatus.OK);    }
+
+	@GetMapping("/countActiveAccounts")
+	public ResponseEntity<?> countActiveAccounts(){
+		SuccessResponse succesResponse = new SuccessResponse(accountService.countActiveAccounts(),true,HttpStatus.ACCEPTED,HttpStatus.ACCEPTED.value());
+		return new ResponseEntity<>(succesResponse, HttpStatus.OK);
+	}
+
+	@GetMapping("/countInstAccounts")
+	public ResponseEntity<?> countInstAccounts(){
+		SuccessResponse succesResponse = new SuccessResponse(accountService.countInstAccounts(),true,HttpStatus.ACCEPTED,HttpStatus.ACCEPTED.value());
+		return new ResponseEntity<>(succesResponse, HttpStatus.OK);
+	}
 
 
 }
