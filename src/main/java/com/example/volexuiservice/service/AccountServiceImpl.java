@@ -1,5 +1,6 @@
 package com.example.volexuiservice.service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -212,8 +213,6 @@ public class AccountServiceImpl implements AccountService {
 		accountRepository.save(accountSave); 
 		return new SuccessResponse("Status updated successfully",true, HttpStatus.OK,200);
 	}
-
-
 
 
 

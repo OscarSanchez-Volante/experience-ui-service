@@ -75,6 +75,7 @@ public class AccountController {
 		return new ResponseEntity<>(succesResponse,HttpStatus.OK);
 	}
 	
+	
 	@PostMapping("/email")
 	public ResponseEntity<?> validateEmail(@RequestBody Login login) {
 		
@@ -146,6 +147,8 @@ public class AccountController {
 	public ResponseEntity<?> updateAccountName(@RequestBody updateAccountNameData data){
 		return new ResponseEntity<>(accountService.updateAccountName(data.id,data.name,data.lastname), HttpStatus.OK);
     }
+	
+	
 
 
 	public static class updateAccountData

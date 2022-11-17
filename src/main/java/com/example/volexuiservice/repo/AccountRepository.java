@@ -28,29 +28,34 @@ public interface AccountRepository extends MongoRepository<Account, String> {
 	
 	@Query("{ 'email' :  ?0, 'password' :  ?1}")
 	Optional<Account> validatePassword(String email,String password);
+
 	
+	/* 
+	 * findALl filtros y paginacion
+	 */
+	
+	@Query("{ 'status': {$ne: 'removed' }}")
 	Page<Account> findAll(Pageable pageable);
 	
-	
-	@Query("{$expr: {$eq: [{$concat: ['$firstName', ' ', '$lastName']}, ?0]}}")
+	@Query("{ 'status': {$ne: 'removed' }, $or:[ { 'firstName': {$regex: /?0/, $options:'i' } }, { 'lastName': {$regex: /?0/, $options:'i' } } ]  }")
 	Page<Account> findByUser(String user, Pageable pageable);
 	
+	@Query("{ 'status': {$ne: 'removed' }, 'email': {$regex: /?0/, $options:'i' }}")
 	Page<Account> findByEmail(String email, Pageable pageable);
 	
-	@Query("{'institution': ?0}")
+	@Query("{'institution': {$regex: /?0/, $options:'i' },'status': {$ne: 'removed' }}")
 	Page<Account> findByCompany(String institution, Pageable pageable);
 	
+	@Query("{'institution': {$regex: /?2/, $options:'i' }, 'email': {$regex: /?1/, $options:'i' }, 'status': {$ne: 'removed' },  $or:[ { 'firstName': {$regex: /?0/, $options:'i' } }, { 'lastName': {$regex: /?0/, $options:'i' } } ] }")
+	Page<Account> findAllFilters(String user, String email, String company,Pageable pageable);
 	
-	@Query("{'institution':?2, 'email':?1, $expr: {$eq: [{$concat: ['$firstName', ' ', '$lastName']}, ?0]}}")
-	Page<Account> findAllFilters(String user, String email, String institution,Pageable pageable);
-	
-	@Query("{ 'email':?1, $expr: {$eq: [{$concat: ['$firstName', ' ', '$lastName']}, ?0]}}")
+	@Query("{ 'email': {$regex: /?1/, $options:'i' }, 'status': {$ne: 'removed' }, $or:[ { 'firstName': {$regex: /?0/, $options:'i' } }, { 'lastName': {$regex: /?0/, $options:'i' } } ]  }")
 	Page<Account> findByUserEmail(String user, String email, Pageable pageable);
 	
-	@Query("{ 'institution':?1, $expr: {$eq: [{$concat: ['$firstName', ' ', '$lastName']}, ?0]}}")
+	@Query("{ 'institution': {$regex: /?1/, $options:'i' }, 'status': {$ne: 'removed' }, $or:[ { 'firstName': {$regex: /?0/, $options:'i' } }, { 'lastName': {$regex: /?0/, $options:'i' } } ]}")
 	Page<Account> findByUserCompany(String user, String company, Pageable pageable);
 	
-	@Query("{'institution':?1, 'email':?0 }")
+	@Query("{'institution': {$regex: /?1/, $options:'i' }, 'email': {$regex: /?0/, $options:'i' }, 'status': {$ne: 'removed' } }")
 	Page<Account> findByEmailCompany(String email, String company, Pageable pageable);
 
 }
